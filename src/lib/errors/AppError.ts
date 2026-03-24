@@ -25,4 +25,5 @@ export default class AppError extends Error {
 
 export type ErrorInput = {
   errorMessage: string;
+  isOperational?: boolean;
 };
