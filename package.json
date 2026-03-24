@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx tsx watch src/index.ts",
-    "build" : "npx tsc"
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,8 @@
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
