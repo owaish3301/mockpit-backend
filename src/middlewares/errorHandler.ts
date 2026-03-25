@@ -9,7 +9,7 @@ function toAppError(err: unknown) {
   }
 
   if (err instanceof PrismaClientInitializationError) {
-    throw new InternalError({
+    return new InternalError({
       errorMessage:
         "An internal server error has occured. Please try again later!",
       isOperational: false,

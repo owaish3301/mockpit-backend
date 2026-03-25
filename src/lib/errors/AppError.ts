@@ -19,7 +19,7 @@ export default class AppError extends Error {
     this.errorCode = options.errorCode;
     this.statusCode = options.statusCode;
     this.errorMessage = options.errorMessage;
-    this.isOperational = options.isOperational || true;
+    this.isOperational = options.isOperational ?? true;
   }
 }
 
