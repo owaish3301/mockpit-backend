@@ -11,3 +11,52 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Project {
+  id String @id @default(uuid())
+  name String
+  slug String @unique
+  routes Route[]
+  json_data JsonData[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Route {
+  id String @id @default(uuid())
+  path String
+  method Method
+  projects Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  logs Log[]
+  project_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@unique([path, method, project_id])
+}
+
+model JsonData {
+  id String @id @default(uuid())
+  key String
+  data Json
+  projects Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@unique([key, project_id])
+}
+
+model Log {
+  id String @id @default(uuid())
+  log_data Json
+  routes Route @relation(fields: [route_id], references: [id], onDelete: Cascade)
+  route_id String
+  created_at DateTime @default(now())
+}
+
+enum Method{
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+}
