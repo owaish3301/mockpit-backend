@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../../lib/prisma.js";
 import { Prisma } from "../../generated/prisma/client.js";
 import { BadRequest } from "../../lib/errors/HttpError.js";
+import { length } from "zod";
 
 export async function getAllProjects(
   req: Request,
@@ -9,11 +10,9 @@ export async function getAllProjects(
   next: NextFunction,
 ) {
   try {
-    const pageNum =
-    Number(req.query.page) < 1 ? 1 : Number(req.query.page) || 1;
+    let pageNum = Number(req.query.page) < 1 ? 1 : Number(req.query.page) || 1;
     const take = Number(req.query.limit) || 10;
-    const skip = (pageNum - 1) * take;
-    
+
     const q =
       typeof req.query.q === "string" && req.query.q.trim()
         ? req.query.q.trim()
@@ -74,24 +73,26 @@ export async function getAllProjects(
         ...(to && { lte: to }),
       };
     }
-
-    const [projects, total] = await Promise.all([
-      prisma.project.findMany({
-        take: take,
-        skip,
-        where,
-        orderBy: {
-          [sortBy]: order,
-        },
-      }),
-      prisma.project.count({ where: where }),
-    ]);
+    const total = await prisma.project.count({ where });
+    const pageCount = Math.ceil(total / take);
+    if (pageNum > pageCount) {
+      pageNum = pageCount;
+    }
+    const skip = (pageNum - 1) * take;
+    const projects = await prisma.project.findMany({
+      take: take,
+      skip,
+      where,
+      orderBy: {
+        [sortBy]: order,
+      },
+    });
     return res.status(200).json({
       success: true,
-      data: { projects },
+      data: { projects, length: projects.length },
       hasMore: skip + projects.length < total ? true : false,
       page: pageNum,
-      length: projects.length,
+      pageCount,
     });
   } catch (err) {
     return next(err);
