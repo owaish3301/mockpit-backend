@@ -1,0 +1,28 @@
+$kind: http-request
+name: New Request
+url: "{{BASE_URL}}/projects?q=ecom&page=2&limit=1&from=2026-03-01T00:00:00Z&to=\
+  2026-03-28T23:59:59Z&sortBy=name&order=asc"
+method: GET
+queryParams:
+  - key: q
+    value: ecom
+    description: search term
+  - key: page
+    value: "2"
+    description: page number for pagination
+  - key: limit
+    value: "1"
+    description: how many items per page
+  - key: from
+    value: 2026-03-01T00:00:00Z
+    description: date range filter - start date, in ISO 8601 format
+  - key: to
+    value: 2026-03-28T23:59:59Z
+    description: date range filter - end date, in ISO 8601 format
+  - key: sortBy
+    value: name
+    description: sort by - created_at, updated_at or name
+  - key: order
+    value: asc
+    description: sort order - asc or desc
+order: 1774679823752

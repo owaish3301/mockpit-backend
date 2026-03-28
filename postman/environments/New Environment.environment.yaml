@@ -1,0 +1,5 @@
+name: New Environment
+values:
+  - key: BASE_URL
+    value: 'http://localhost:3000'
+    enabled: true
